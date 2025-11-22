@@ -49,7 +49,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className={`text-lg font-semibold transition-all duration-300 ${
+          className={`text-xl font-semibold transition-all duration-300 ${
             isScrolled ? "text-black" : "text-white"
           }`}
         >
@@ -63,7 +63,7 @@ export default function Navbar() {
             {/* Innovation Marketplace */}
             <NavigationMenuItem>
               <NavigationMenuTrigger
-                className={`transition ${isScrolled ? "" : "hover:bg-white/30"}`}
+                className={`transition ${isScrolled ? "" : "hover:bg-white/30"} text-base md:text-lg`}
               >
                 Innovation Marketplace
               </NavigationMenuTrigger>
@@ -88,7 +88,7 @@ export default function Navbar() {
             {/* News & Events */}
             <NavigationMenuItem>
               <NavigationMenuTrigger
-                className={`transition ${isScrolled ? "" : "hover:bg-white/30"}`}
+                className={`transition ${isScrolled ? "" : "hover:bg-white/30"} text-base md:text-lg`}
               >
                 News & Events
               </NavigationMenuTrigger>
@@ -109,7 +109,7 @@ export default function Navbar() {
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link
                   href="/about"
-                  className={`${navigationMenuTriggerStyle()} hover:bg-transparent transition-none`}
+                  className={`${navigationMenuTriggerStyle()} hover:bg-transparent transition-none text-base md:text-lg`}
                 >
                   About Us
                 </Link>
@@ -121,7 +121,7 @@ export default function Navbar() {
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link
                   href="/contact"
-                  className={`${navigationMenuTriggerStyle()} hover:bg-transparent transition-none`}
+                  className={`${navigationMenuTriggerStyle()} hover:bg-transparent transition-none text-base md:text-lg`}
                 >
                   Contact Us
                 </Link>
@@ -131,7 +131,7 @@ export default function Navbar() {
             {/* Profile */}
             <NavigationMenuItem className="hidden md:block">
               <NavigationMenuTrigger
-                className={`transition ${isScrolled ? "" : "hover:bg-white/30"}`}
+                className={`transition ${isScrolled ? "" : "hover:bg-white/30"}text-base md:text-lg`}
               >
                 Profile
               </NavigationMenuTrigger>

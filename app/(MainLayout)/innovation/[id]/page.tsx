@@ -2,13 +2,16 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 
-// ================= Mock Data =================
+// ================= MOCK DATA =================
 const mockData = [
   { id: 1, title: "AI Assistant", desc: "AI-based automation system.", category: "Technology", image: "/images/Acer1.jpg" },
   { id: 2, title: "Smart Farming", desc: "IoT-based precision farming.", category: "Agriculture", image: "/images/Acer2.jpg" },
   { id: 3, title: "Solar Energy Grid", desc: "Solar renewable system.", category: "Energy", image: "/images/Acer1.jpg" },
-   { id: 4, title: "FinTech Analytics", desc: "Analitik keuangan untuk UMKM.", category: "Finance", image: "/images/Acer2.jpg" },
+  { id: 4, title: "FinTech Analytics", desc: "Analitik keuangan untuk UMKM.", category: "Finance", image: "/images/Acer2.jpg" },
   { id: 5, title: "Urban Mobility", desc: "Transportasi ramah lingkungan di perkotaan.", category: "Transportation", image: "/images/Acer1.jpg" },
   { id: 6, title: "Healthcare IoT", desc: "Pemantauan kesehatan jarak jauh.", category: "Health", image: "/images/Acer2.jpg" },
   { id: 7, title: "Eco Packaging", desc: "Kemasan biodegradable ramah lingkungan.", category: "Environment", image: "/images/Acer1.jpg" },
@@ -18,141 +21,311 @@ const mockData = [
 export default function InnovationDetailPage() {
   const { id } = useParams();
   const router = useRouter();
+  const [openModal, setOpenModal] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState("");
+
   const item = mockData.find((x) => x.id === Number(id));
+  const relatedInnovations = mockData.filter((x) => x.id !== Number(id)).slice(0, 3);
 
   if (!item) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500 text-lg">Innovation not found.</p>
+      <main className="min-h-screen flex items-center justify-center bg-slate-50">
+        <p className="text-slate-500 text-lg">Innovation not found.</p>
       </main>
     );
   }
+// ================= URL share =================
+  useEffect(() => {
+  setCurrentUrl(window.location.href);
+  }, []);
 
-  // Innovation Related: kecuali item yang sedang dibuka
-  const relatedInnovations = mockData.filter((x) => x.id !== item.id).slice(0, 3);
+  // ================= GALLERY AUTO-SLIDE =================
+  useEffect(() => {
+    const slider = document.getElementById("galleryCarousel");
+    if (!slider) return;
+
+    let index = 0;
+    const total = slider.children.length;
+
+    const interval = setInterval(() => {
+      index = (index + 1) % total;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+      slider.setAttribute("data-index", String(index));
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const slideGallery = (dir: number) => {
+    const slider = document.getElementById("galleryCarousel");
+    if (!slider) return;
+
+    const total = slider.children.length;
+    const current = Number(slider.getAttribute("data-index") || 0);
+    const next = (current + dir + total) % total;
+
+    slider.style.transform = `translateX(-${next * 100}%)`;
+    slider.setAttribute("data-index", String(next));
+  };
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* ================= HERO ================= */}
+    <main className="min-h-screen bg-[#FAF7F2]">
+      {/* ================= HERO IMAGE ================= */}
       <section className="relative w-full h-80 sm:h-[420px]">
         <Image src={item.image} alt={item.title} fill className="object-cover" />
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
-        {/* ============ TITLE ============ */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10">{item.title}</h1>
+      {/* ================= DETAIL SECTION ================= */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-8">{item.title}</h1>
 
-        {/* ============ PHOTO + SIDEBAR GRID ============ */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20">
-          {/* LEFT PHOTO CARD */}
-          <div className="lg:col-span-2">
-            <div className="w-full h-[350px] relative rounded-xl overflow-hidden shadow">
-              <Image src={item.image} alt={item.title} fill className="object-cover" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            {/* LEFT CONTENT */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Main Photo */}
+              <div className="w-full h-[350px] relative rounded-xl overflow-hidden shadow-md">
+                <Image src={item.image} alt={item.title} fill className="object-cover" />
+              </div>
+
+              {/* GALLERY */}
+              <h2 className="text-xl font-semibold text-slate-900">Innovation Gallery</h2>
+              <div className="relative overflow-hidden rounded-xl shadow-md">
+                <div id="galleryCarousel" data-index="0" className="flex transition-transform duration-700 ease-in-out">
+                  {[item.image, "/images/Acer2.jpg", "/images/Acer1.jpg"].map((img, index) => (
+                    <div key={index} className="min-w-full px-2">
+                      <div className="relative w-full h-60 sm:h-72 lg:h-80 rounded-xl overflow-hidden shadow">
+                        <Image src={img} alt={`Gallery ${index}`} fill className="object-cover" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button onClick={() => slideGallery(-1)} className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full px-3 py-2 shadow-lg">‹</button>
+                <button onClick={() => slideGallery(1)} className="absolute top-1/2 right-3 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full px-3 py-2 shadow-lg">›</button>
+              </div>
+
+              {/* DETAILS SECTION */}
+              <section className="bg-white rounded-xl p-6 shadow-sm space-y-6">
+                <DetailBlock title="Technology Overview" content={item.desc} />
+                <DetailList
+                  title="Technology Features & Specifications"
+                  items={[
+                    "High efficiency performance",
+                    "Modular architecture for scalability",
+                    "Easy integration with existing systems",
+                    "Low carbon footprint",
+                    "Certified and field-tested",
+                  ]}
+                />
+                <DetailBlock
+                  title="Potential Application"
+                  content="Applicable across smart cities, agriculture, manufacturing, healthcare, and renewable energy systems."
+                />
+                <DetailBlock
+                  title="Unique Value Proposition"
+                  content="Provides measurable impact by improving efficiency and enabling intelligent decision-making."
+                />
+
+                <RequestUpdate onOpen={() => setOpenModal(true)} />
+
+                {/* ================= SHARE BUTTONS ================= */}
+                <div className="border-t border-gray-300 mt-6 pt-4">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-slate-700">
+                    <p className="text-sm md:mb-0">Share this innovation:</p>
+                    <div className="flex items-center gap-4 text-xl">
+                      <Link
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-blue-600 transition-colors"
+                      ><FaFacebookF /></Link>
+                      <Link
+                        href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-blue-400 transition-colors"
+                      ><FaTwitter /></Link>
+                      <Link
+                        href={`https://www.linkedin.com/sharing/share-offsite/?url=$(currentUrl)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-blue-700 transition-colors"
+                      ><FaLinkedinIn /></Link>
+                      <Link
+                        href={`https://www.instagram.com/`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-pink-500 transition-colors"
+                      ><FaInstagram /></Link>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
+
+            {/* RIGHT SIDEBAR */}
+            <Sidebar item={item} router={router} />
           </div>
-
-          {/* RIGHT SIDEBAR (STICKY) */}
-          <aside className="md:sticky md:top-24 space-y-5">
-            <h3 className="text-xl font-semibold mb-4 text-cyan-800">Key Information</h3>
-            <div className="space-y-3 text-gray-700">
-              <p><strong>Category:</strong> <br /> {item.category}</p>
-              <p><strong>ID Number:</strong> INNOV-{item.id}</p>
-              <p>
-                <strong>Status:</strong>{" "}
-                <span className="text-green-600 font-semibold">Approved Innovation</span>
-              </p>
-            </div>
-            <button className="mt-6 w-full bg-cyan-700 text-white py-3 rounded-lg font-semibold hover:bg-cyan-800 transition">
-              Make an Enquiry
-            </button>
-          </aside>
         </div>
+      </section>
 
-        {/* ================= LARGE CONTENT SECTIONS ================= */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 uppercase border-l-4 border-cyan-700 pl-4 mb-5">Technology Overview</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">{item.desc}</p>
-          <p className="text-gray-700 leading-relaxed">
-            This innovation enhances efficiency, reduces maintenance costs, and supports operational readiness across various industries.
-          </p>
-        </section>
-
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold uppercase border-l-4 border-cyan-700 pl-4 mb-5">Technology Features & Specifications</h2>
-          <ul className="list-disc ml-6 text-gray-700 space-y-2">
-            <li>High efficiency performance</li>
-            <li>Modular architecture for scalability</li>
-            <li>Easy integration with existing systems</li>
-            <li>Low carbon footprint</li>
-            <li>Certified and field-tested</li>
-          </ul>
-        </section>
-
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold uppercase border-l-4 border-cyan-700 pl-4 mb-5">Potential Application</h2>
-          <p className="text-gray-700 leading-relaxed">
-            Applicable across smart cities, agriculture, manufacturing, healthcare, and renewable energy systems.
-          </p>
-        </section>
-
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold uppercase border-l-4 border-cyan-700 pl-4 mb-5">Unique Value Proposition</h2>
-          <p className="text-gray-700 leading-relaxed">
-            Provides measurable impact by improving efficiency, lowering operational costs, and enabling intelligent decision-making.
-          </p>
-        </section>
-
-        {/* ================= SHARE BUTTONS ================= */}
-        <section className="mb-16 text-left">
-          <h3 className="text-xl font-semibold mb-4 text-cyan-800">Share this Innovation</h3>
-          <div className="flex justify-left gap-4">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Facebook</button>
-            <button className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 transition">Twitter</button>
-            <button className="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-900 transition">LinkedIn</button>
-          </div>
-        </section>
-
-        {/* ================= INNOVATION RELATED ================= */}
-        <section className="mb-20">
-  <h3 className="text-2xl font-bold mb-8 text-gray-900 tracking-tight">
-    Related Innovations
-  </h3>
-
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-    {relatedInnovations.map((rel) => (
-      <div
-        key={rel.id}
-        className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border cursor-pointer"
-        onClick={() => router.push(`/innovation/${rel.id}`)}
-      >
-        {/* IMAGE */}
-        <div className="relative w-full h-56 overflow-hidden">
-          <Image
-            src={rel.image}
-            alt={rel.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+      {/* ================= RELATED INNOVATIONS ================= */}
+      <section className="w-full bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <RelatedItems related={relatedInnovations} router={router} />
         </div>
+      </section>
 
-        {/* CONTENT */}
-        <div className="p-5">
-          <h4 className="font-semibold text-gray-900 text-lg mb-2 group-hover:text-cyan-700 transition-colors">
-            {rel.title}
-          </h4>
-
-          <p className="text-gray-600 text-sm flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-cyan-700"></span>
-            {rel.category}
-          </p>
-        </div>
-      </div>
-    ))}
-  </div>
-</section>
-
-
-      </div>
+      {/* MODAL */}
+      {openModal && <UpdateModal onClose={() => setOpenModal(false)} />}
     </main>
+  );
+}
+
+/* ============================================================
+   =================== COMPONENTS ============================
+   ============================================================ */
+
+function DetailBlock({ title, content }: any) {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-teal-700 border-l-4 border-teal-200 pl-4 mb-2">{title}</h2>
+      <p className="text-slate-700">{content}</p>
+    </div>
+  );
+}
+
+function DetailList({ title, items }: any) {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-teal-700 border-l-4 border-teal-200 pl-4 mb-2">{title}</h2>
+      <ul className="space-y-2 pl-4">
+        {items.map((i: string, idx: number) => (
+          <li key={idx} className="relative pl-6">{i}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function RequestUpdate({ onOpen }: any) {
+  return (
+    <div className="pt-4 border-t border-slate-200">
+      <h2 className="text-xl font-semibold text-teal-700 mb-2">Request Update Data</h2>
+      <p className="text-slate-600 mb-2">
+        Have updated information about this innovation? Submit it so our team can update the catalog.
+      </p>
+      <button onClick={onOpen} className="px-5 py-3 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors">
+        Submit Update Request
+      </button>
+    </div>
+  );
+}
+
+function Sidebar({ item, router }: any) {
+  return (
+    <aside className="space-y-6 md:sticky md:top-24">
+      <div className="bg-white rounded-xl p-6 shadow-md">
+        <h3 className="text-lg font-semibold text-teal-800 mb-4">Key Information</h3>
+        <SidebarInfo label="Category" value={item.category} badge />
+        <SidebarInfo label="ID Number" value={`INNOV-${item.id}`} />
+        <SidebarInfo label="Status" value="✓ Approved Innovation" badgeGreen />
+        <SidebarInfo label="TRL" value="TRL 7 - System Prototype" />
+        <SidebarInfo label="Location" value="Jawa Timur, Indonesia" />
+        <button
+          onClick={() => router.push("/contact")}
+          className="mt-4 w-full px-4 py-3 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors"
+        >
+          Make an Enquiry
+        </button>
+      </div>
+    </aside>
+  );
+}
+
+function SidebarInfo({ label, value, badge, badgeGreen }: any) {
+  return (
+    <div className="mb-4">
+      <p className="text-xs font-medium text-gray-500 uppercase">{label}</p>
+      <p className="mt-1 text-sm font-semibold text-slate-800">
+        {badge && <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full">{value}</span>}
+        {badgeGreen && <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full">{value}</span>}
+        {!badge && !badgeGreen && value}
+      </p>
+    </div>
+  );
+}
+
+function RelatedItems({ related, router }: any) {
+  return (
+    <section className="mt-8">
+      <h3 className="text-2xl font-bold mb-6 text-slate-900">Related Innovations</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {related.map((rel: any) => (
+          <div
+            key={rel.id}
+            onClick={() => router.push(`/innovation/${rel.id}`)}
+            className="cursor-pointer rounded-xl overflow-hidden bg-white shadow-md hover:shadow-lg transition-all duration-500"
+          >
+            <div className="relative w-full h-56 overflow-hidden rounded-t-xl group">
+              <Image
+                src={rel.image}
+                alt={rel.title}
+                fill
+                className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110 group-hover:contrast-105"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-700"></div>
+            </div>
+            <div className="p-5">
+              <h4 className="font-semibold text-slate-900 text-lg mb-1">{rel.title}</h4>
+              <p className="text-slate-600 text-sm">{rel.category}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function UpdateModal({ onClose }: any) {
+  return (
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl w-full max-w-lg p-8 shadow-xl relative">
+        <button onClick={onClose} className="absolute top-3 right-3 text-gray-600 text-2xl">×</button>
+        <h2 className="text-2xl font-bold text-teal-700 mb-3">Request Data Update</h2>
+        <p className="text-gray-500 text-sm mb-6">Submit your updated information below.</p>
+        <form className="space-y-4">
+          <InputField label="Name" type="text" placeholder="Your Name" />
+          <InputField label="Email" type="email" placeholder="email@example.com" />
+          <InputField label="WhatsApp Number" type="text" placeholder="08xxxx" />
+          <div>
+            <label className="block text-sm font-semibold mb-2 text-gray-700">Section to Update</label>
+            <select className="w-full border border-gray-300 rounded-xl p-3">
+              <option value="">Choose section…</option>
+              <option>Overview</option>
+              <option>Feature</option>
+              <option>Specification</option>
+              <option>Potential Application</option>
+              <option>Unique Value</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-2 text-gray-700">Update Details</label>
+            <textarea rows={4} className="w-full border border-gray-300 rounded-xl p-3" />
+          </div>
+          <button className="w-full bg-teal-700 text-white py-3 rounded-xl font-semibold hover:bg-teal-800 transition-colors">Submit Request</button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function InputField({ label, type, placeholder }: any) {
+  return (
+    <div>
+      <label className="block text-sm font-semibold mb-2 text-gray-700">{label}</label>
+      <input type={type} placeholder={placeholder} className="w-full border border-gray-300 rounded-xl p-3" />
+    </div>
   );
 }

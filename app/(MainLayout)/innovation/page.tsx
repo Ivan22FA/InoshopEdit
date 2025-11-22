@@ -88,10 +88,10 @@ export default function TechOffersPage() {
             <ListItem href="/innovation" title="Approved Innovations">
               Katalog inovasi terbaru
             </ListItem>
-            <ListItem href="#" title="Innovation Matching">
+            <ListItem href="/matching" title="Innovation Matching">
               Sistem pencocokan inovasi
             </ListItem>
-            <ListItem href="#" title="Innovation Funding">
+            <ListItem href="/funding" title="Innovation Funding">
               Informasi pendanaan dan program akselerasi
             </ListItem>
           </ul>

@@ -17,12 +17,28 @@ export function CarouselComponent() {
   const duration = 5000 // waktu per slide (ms)
 
   const slides = [
-    { image: "/images/Acer1.jpg" },
-    { image: "/images/Acer2.jpg" },
-    { image: "/images/Acer1.jpg" },
-    { image: "/images/Acer2.jpg" },
-    { image: "/images/Acer1.jpg" },
-  ];
+    {
+      image: "/images/Pesona1.mp4",
+      title: "Discover How to Become an Innovator with BRIDA",
+      desc: "Jadilah bagian dari innovator kami, pelajari cara mendaftarkan inovasi, dan bangun kolaborasi dengan industri maupun para innovator.",
+      button: "Learn How",
+      link: "/contact"
+    },
+    {
+      image: "/images/Pesona2.mp4",
+      title: "MEET LEADING INNOVATORS",
+      desc: "Jelajahi ide dan teknologi terbaru dari para innovator terbaik untuk mendukung pertumbuhan bisnis Anda.",
+      button: "Explore Innovators",
+      link: "/innovator"
+    },
+    {
+      image: "/images/CaroselDepan3.jpg",
+      title: "WHAT'S NEXT IN INNOVATION",
+      desc: "Arahkan inovasi Anda ke tahap berikutnya melalui business matching dan peluang pendanaan strategis.",
+      button: "Discover Opportunities",
+      link: "/matching"
+    }
+  ]
 
   // Autoplay logic
   React.useEffect(() => {
@@ -41,36 +57,67 @@ export function CarouselComponent() {
     }
   }, [slides.length])
 
+  // Deteksi video
+  const isVideo = (src: string) => {
+    return src.endsWith(".mp4") || src.endsWith(".webm") || src.endsWith(".mov")
+  }
+
   return (
     <section className="w-full h-screen overflow-hidden">
       <div className="max-w-11/12 flex flex-col items-center mx-auto h-full">
 
-      {/* Carousel dan progress bar */}
+        {/* TEXT OVERLAY */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-20 pointer-events-none">
+          <h1 className="text-3xl md:text-5xl font-bold text-white drop-shadow-xl mb-4 transition-all duration-700">
+            {slides[current].title}
+          </h1>
+
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl drop-shadow-lg mb-6 transition-all duration-700">
+            {slides[current].desc}
+          </p>
+
+          <Link
+            href={slides[current].link}
+            className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white text-lg font-semibold rounded-md transition-all shadow-lg pointer-events-auto"
+          >
+            {slides[current].button}
+          </Link>
+        </div>
+
+        {/* CAROUSEL */}
         <div className="flex-1 flex items-center justify-center">
-          {/* Carousel gambar container */}
           <div className="absolute inset-0 -z-10">
-            <Carousel opts={{ align: "center", loop: true }} >
+            <Carousel opts={{ align: "center", loop: true }}>
               <CarouselContent>
                 {slides.map((slide, index) => (
                   <CarouselItem
                     key={index}
                     className={cn(
                       "flex items-center justify-center min-w-screen h-screen shrink-0 transition-opacity duration-700",
-                      current === index ? "opacity-100" : "opacity-0 absolute inset-0 pointer-events-none"
+                      current === index
+                        ? "opacity-100"
+                        : "opacity-0 absolute inset-0 pointer-events-none"
                     )}
                   >
-                    <div className="flex items-center justify-center">
-                      <Card className="border-none shadow-none">
-                        <CardContent>
-                          <Image
-                            src={slide.image} // URL gambar dari array slides
-                            alt={`Slide ${index + 1}`}
-                            fill
-                            priority={index === 0} // optimasi untuk slide pertama
-                            className="w-full h-full"
-                          />
-                        </CardContent>
-                      </Card>
+                    <div className="w-full h-full relative">
+                      {isVideo(slide.image) ? (
+                        <video
+                          src={slide.image}
+                          className="w-full h-full object-cover"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                        />
+                      ) : (
+                        <Image
+                          src={slide.image}
+                          alt={`Slide ${index + 1}`}
+                          fill
+                          priority={index === 0}
+                          className="object-cover w-full h-full"
+                        />
+                      )}
                     </div>
                   </CarouselItem>
                 ))}
@@ -78,7 +125,7 @@ export function CarouselComponent() {
             </Carousel>
           </div>
 
-          {/* Progress bar di bawah carousel */}
+          {/* PROGRESS BAR */}
           <div className="absolute bottom-0 left-0 right-0">
             <div className="w-full h-1 bg-white/30 rounded-full overflow-hidden">
               <div
@@ -89,16 +136,14 @@ export function CarouselComponent() {
           </div>
         </div>
 
-        {/* Breadcrumb di bawah progress bar */}
+        {/* BULLET INDICATOR */}
         <div className="mt-6 flex gap-2">
           {slides.map((_, index) => (
             <div
               key={index}
               className={cn(
                 "h-2 w-8 rounded-full transition-all cursor-pointer",
-                index === current
-                  ? "bg-white w-14"
-                  : "bg-white/40 hover:bg-white/60"
+                index === current ? "bg-white w-14" : "bg-white/40 hover:bg-white/60"
               )}
               onClick={() => {
                 setCurrent(index)
@@ -108,29 +153,13 @@ export function CarouselComponent() {
           ))}
         </div>
 
-        {/* Berita di bawah carousel */}
+        {/* QUICK LINKS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full mt-6">
           {[
-            {
-              title: "Lihat",
-              desc: "Inovasi Terbaru",
-              link: "/innovation",
-            },
-            {
-              title: "Ikuti",
-              desc: "Berita Terbaru",
-              link: "/news",
-            },
-            {
-              title: "Kunjungi",
-              desc: "Event",
-              link: "/events",
-            },
-            {
-              title: "Baca",
-              desc: "Tentang Kami",
-              link: "/about",
-            },
+            { title: "Lihat", desc: "Inovasi Terbaru", link: "/innovation" },
+            { title: "Ikuti", desc: "Berita Terbaru", link: "/news" },
+            { title: "Kunjungi", desc: "Event", link: "/events" },
+            { title: "Baca", desc: "Tentang Kami", link: "/about" },
           ].map((item, index) => (
             <Card
               key={index}
@@ -141,9 +170,7 @@ export function CarouselComponent() {
                   href={item.link}
                   className="text-lg font-semibold hover:text-blue-600 transition-colors"
                 >
-                  <div className="text-xl">
-                      {item.title}
-                  </div>
+                  <div className="text-xl">{item.title}</div>
                   <div className="text-2xl">{item.desc}</div>
                 </Link>
               </CardContent>

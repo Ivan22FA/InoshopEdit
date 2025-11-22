@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import AutoBreadcrumb from "@/components/ui/autobreadcrumb";
 
 type SectionKey = "who" | "what" | "why" | "stand" | "journey";
 
@@ -52,6 +54,30 @@ export default function AboutPage() {
   const [indicatorPos, setIndicatorPos] = useState(0);
   const [indicatorHeight, setIndicatorHeight] = useState(20);
 
+  const searchParams = useSearchParams();
+
+  // Handle query ?section=
+  useEffect(() => {
+    const section = searchParams.get("section") as SectionKey | null;
+
+    if (section && keys.includes(section)) {
+      setFade(false);
+      setTimeout(() => {
+        setActive(section);
+        setTimeout(() => setFade(true), 120);
+      }, 150);
+
+      // Scroll ke bagian kisah
+      const kisah = document.getElementById("kisah-kami");
+      if (kisah) {
+        setTimeout(() => {
+          kisah.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 300);
+      }
+    }
+  }, [searchParams]);
+  
+  
   // Update indikator saat berubah
   useEffect(() => {
     const index = keys.indexOf(active);
@@ -106,6 +132,12 @@ export default function AboutPage() {
           </p>
         </div>
       </section>
+
+       {/* Breadcrumb DI SINI */}
+                  <div className="container mx-auto px-4 mt-4">
+                    <AutoBreadcrumb />
+                  </div>
+
 
       {/* KISAH KAMI */}
       <section className="py-20 flex justify-center">
