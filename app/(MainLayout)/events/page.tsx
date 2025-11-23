@@ -17,6 +17,7 @@ const eventInfo = {
 
 export default function EventPage() {
   const eventDate = eventInfo.eventDate;
+
   const [countdown, setCountdown] = useState([
     { label: "Days", value: 0 },
     { label: "Hours", value: 0 },
@@ -24,6 +25,7 @@ export default function EventPage() {
     { label: "Seconds", value: 0 },
   ]);
 
+  /* COUNTDOWN EFFECT */
   useEffect(() => {
     const tick = setInterval(() => {
       const now = new Date();
@@ -58,7 +60,7 @@ export default function EventPage() {
   return (
     <div className="w-full min-h-screen bg-white text-gray-900">
 
-      {/* HERO SECTION */}
+      {/* ================= HERO SECTION ================= */}
       <section className="relative h-[90vh] w-full flex items-center justify-center bg-black">
         <Image
           src="/images/Event1.jpg"
@@ -86,12 +88,12 @@ export default function EventPage() {
         </div>
       </section>
 
-      {/* COUNTDOWN BOX */}
+      {/* ================= COUNTDOWN BOX ================= */}
       <section className="relative -mt-20 w-full flex justify-center z-20 px-4">
-        <div
-          className="bg-white text-gray-900 shadow-2xl rounded-xl p-8 w-full max-w-5xl 
-        grid grid-cols-1 md:grid-cols-5 gap-6 border-t-4 border-pink-600"
-        >
+        <div className="
+          bg-white text-gray-900 shadow-2xl rounded-xl p-8 w-full max-w-5xl 
+          grid grid-cols-1 md:grid-cols-5 gap-6 border-t-4 border-pink-600">
+
           {/* Date Section */}
           <div className="flex flex-col justify-center items-center border-r md:border-r-2 border-gray-200 md:pr-6">
             <h2 className="text-4xl font-bold text-pink-600">{eventInfo.day}</h2>
@@ -116,72 +118,110 @@ export default function EventPage() {
         </div>
       </section>
 
-      {/* EVENT DETAILS */}
-      <section className="max-w-5xl mx-auto px-6 pb-10 pt-32 text-gray-800">
+      {/* ================= EVENT DETAILS ================= */}
+      <section className="max-w-6xl mx-auto px-6 pb-20 pt-32 text-gray-800">
 
-        <h2 className="text-3xl font-bold mb-6 text-center">Event Details</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10">
-          {/* About */}
-          <div>
-            <h3 className="text-xl font-semibold mb-3">About The Event</h3>
-            <p className="text-gray-700 leading-relaxed">
-              This creative business conference brings together leaders,
-              innovators, and professionals from all over the world. Learn
-              powerful strategies, discover upcoming industry trends, and
-              network with top experts.
+          {/* LEFT — EVENT DETAILS */}
+          <div className="bg-white shadow-xl rounded-2xl p-10 border border-gray-100">
+
+            {/* MAIN TITLE */}
+            <h2 className="text-3xl font-bold mb-6 text-slate-900 tracking-tight">
+              Event Details
+            </h2>
+
+            {/* DESCRIPTION */}
+            <p className="text-slate-600 leading-relaxed mb-10">
+              This creative business conference brings together global leaders,
+              innovators, and professionals. Learn powerful strategies, discover
+              upcoming industry trends, and network with top experts. Ideal for
+              entrepreneurs, business creators, designers, researchers, and tech
+              innovators who want to stay ahead.
             </p>
+
+            {/* DIVIDER */}
+            <div className="my-10 h-0.5 bg-linear-to-r from-teal-300 via-cyan-300 to-blue-300 rounded-full"></div>
+
+            {/* SCHEDULE */}
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-6">Schedule</h3>
+
+              <div className="space-y-6">
+                <div>
+                  <p className="font-semibold text-slate-900">09:00 AM — Opening Ceremony</p>
+                  <p className="text-slate-500 text-sm">Welcome speech & introduction</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-slate-900">10:00 AM — Keynote Sessions</p>
+                  <p className="text-slate-500 text-sm">Industry leaders present new insights</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-slake-900">01:00 PM — Networking Lunch</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-slate-900">03:00 PM — Workshops</p>
+                </div>
+              </div>
+            </div>
+
+            {/* REGISTER BUTTON */}
+            <div className="mt-12">
+              <button className="
+                w-full py-4 
+                bg-linear-to-r from-teal-600 via-cyan-600 to-blue-600
+                hover:from-teal-700 hover:via-cyan-700 hover:to-blue-700
+                text-white text-lg font-semibold
+                rounded-xl shadow-lg shadow-teal-200
+                transition-all duration-300
+              ">
+                Register Now
+              </button>
+            </div>
           </div>
 
-          {/* What You Will Learn */}
-          <div>
-            <h3 className="text-xl font-semibold mb-3">What You Will Learn</h3>
-            <ul className="list-disc pl-5 text-gray-700 space-y-2">
-              <li>Modern business innovation techniques</li>
-              <li>Creative marketing and branding strategies</li>
-              <li>Networking with industry professionals</li>
-              <li>Future trends in business and technology</li>
-            </ul>
-          </div>
-        </div>
+          {/* RIGHT — LAST EVENTS */}
+          <div className="space-y-6">
 
-        {/* Schedule */}
-        <div className="mt-12">
-          <h3 className="text-xl font-semibold mb-3">Schedule</h3>
+            {/* Last Event Card 1 */}
+            <div className="
+              p-7 rounded-2xl shadow-lg 
+              bg-linear-to-br from-indigo-600 via-violet-600 to-fuchsia-600
+              text-white
+              hover:shadow-2xl hover:-translate-y-1 transition-all duration-300
+            ">
+              <h3 className="text-xl font-semibold mb-4">Last Event — 2024</h3>
 
-          <div className="bg-gray-100 p-6 rounded-lg shadow-lg space-y-4">
-            <div>
-              <p className="font-semibold text-gray-900">
-                09:00 AM - Opening Ceremony
-              </p>
-              <p className="text-gray-500 text-sm">
-                Welcome speech and introduction
-              </p>
+              <div className="space-y-3 text-sm opacity-95">
+                <p className="flex items-center gap-2">📅 12 October 2024</p>
+                <p className="flex items-center gap-2">📍 Jakarta Convention Center</p>
+                <p>Our 2024 event brought together <b>1200+ participants</b> globally.</p>
+              </div>
             </div>
 
-            <div>
-              <p className="font-semibold text-gray-900">
-                10:00 AM - Keynote Sessions
-              </p>
-              <p className="text-gray-500 text-sm">
-                Industry leaders share insights
-              </p>
+            {/* Last Event Card 2 */}
+            <div className="
+              p-7 rounded-2xl shadow-lg 
+              bg-linear-to-br from-blue-600 via-cyan-600 to-teal-500
+              text-white
+              hover:shadow-2xl hover:-translate-y-1 transition-all duration-300
+            ">
+              <h3 className="text-xl font-semibold mb-4">Last Event — 2023</h3>
+
+              <div className="space-y-3 text-sm opacity-95">
+                <p className="flex items-center gap-2">📅 05 November 2023</p>
+                <p className="flex items-center gap-2">📍 Bandung Digital Valley</p>
+                <p>The 2023 edition featured innovation, branding, and digital growth workshops.</p>
+              </div>
             </div>
 
-            <div>
-              <p className="font-semibold text-gray-900">
-                01:00 PM - Networking Lunch
-              </p>
-            </div>
-
-            <div>
-              <p className="font-semibold text-gray-900">
-                03:00 PM - Workshops
-              </p>
-            </div>
           </div>
         </div>
       </section>
+
     </div>
   );
 }
