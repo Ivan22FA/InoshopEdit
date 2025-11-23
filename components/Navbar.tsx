@@ -149,7 +149,7 @@ export default function Navbar() {
           </Sheet>
         ) : (
           // ===== DESKTOP NAVIGATION =====
-          <NavigationMenu>
+          <NavigationMenu viewport={isMobile}>
             <NavigationMenuList className="flex-wrap">
 
               {/* Innovation Marketplace */}
