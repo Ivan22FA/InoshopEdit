@@ -21,7 +21,6 @@ const mockData = [
 export default function InnovationDetailPage() {
   const { id } = useParams();
   const router = useRouter();
-  const [openModal, setOpenModal] = useState(false);
   const [currentUrl, setCurrentUrl] = useState("");
 
   const item = mockData.find((x) => x.id === Number(id));
@@ -34,9 +33,10 @@ export default function InnovationDetailPage() {
       </main>
     );
   }
-// ================= URL share =================
+
+  // ================= URL share =================
   useEffect(() => {
-  setCurrentUrl(window.location.href);
+    setCurrentUrl(window.location.href);
   }, []);
 
   // ================= GALLERY AUTO-SLIDE =================
@@ -127,7 +127,15 @@ export default function InnovationDetailPage() {
                   content="Provides measurable impact by improving efficiency and enabling intelligent decision-making."
                 />
 
-                <RequestUpdate onOpen={() => setOpenModal(true)} />
+                {/* BUTTON MENUJU PAGE UPDATE REQUEST */}
+                <div className="pt-4 border-t border-slate-200">
+                  <button
+                    onClick={() => router.push("/requestupdatedata")}
+                    className="px-5 py-3 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors"
+                  >
+                    Request Update Data
+                  </button>
+                </div>
 
                 {/* ================= SHARE BUTTONS ================= */}
                 <div className="border-t border-gray-300 mt-6 pt-4">
@@ -176,9 +184,6 @@ export default function InnovationDetailPage() {
           <RelatedItems related={relatedInnovations} router={router} />
         </div>
       </section>
-
-      {/* MODAL */}
-      {openModal && <UpdateModal onClose={() => setOpenModal(false)} />}
     </main>
   );
 }
@@ -205,20 +210,6 @@ function DetailList({ title, items }: any) {
           <li key={idx} className="relative pl-6">{i}</li>
         ))}
       </ul>
-    </div>
-  );
-}
-
-function RequestUpdate({ onOpen }: any) {
-  return (
-    <div className="pt-4 border-t border-slate-200">
-      <h2 className="text-xl font-semibold text-teal-700 mb-2">Request Update Data</h2>
-      <p className="text-slate-600 mb-2">
-        Have updated information about this innovation? Submit it so our team can update the catalog.
-      </p>
-      <button onClick={onOpen} className="px-5 py-3 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors">
-        Submit Update Request
-      </button>
     </div>
   );
 }
@@ -285,47 +276,5 @@ function RelatedItems({ related, router }: any) {
         ))}
       </div>
     </section>
-  );
-}
-
-function UpdateModal({ onClose }: any) {
-  return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl w-full max-w-lg p-8 shadow-xl relative">
-        <button onClick={onClose} className="absolute top-3 right-3 text-gray-600 text-2xl">×</button>
-        <h2 className="text-2xl font-bold text-teal-700 mb-3">Request Data Update</h2>
-        <p className="text-gray-500 text-sm mb-6">Submit your updated information below.</p>
-        <form className="space-y-4">
-          <InputField label="Name" type="text" placeholder="Your Name" />
-          <InputField label="Email" type="email" placeholder="email@example.com" />
-          <InputField label="WhatsApp Number" type="text" placeholder="08xxxx" />
-          <div>
-            <label className="block text-sm font-semibold mb-2 text-gray-700">Section to Update</label>
-            <select className="w-full border border-gray-300 rounded-xl p-3">
-              <option value="">Choose section…</option>
-              <option>Overview</option>
-              <option>Feature</option>
-              <option>Specification</option>
-              <option>Potential Application</option>
-              <option>Unique Value</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-2 text-gray-700">Update Details</label>
-            <textarea rows={4} className="w-full border border-gray-300 rounded-xl p-3" />
-          </div>
-          <button className="w-full bg-teal-700 text-white py-3 rounded-xl font-semibold hover:bg-teal-800 transition-colors">Submit Request</button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-function InputField({ label, type, placeholder }: any) {
-  return (
-    <div>
-      <label className="block text-sm font-semibold mb-2 text-gray-700">{label}</label>
-      <input type={type} placeholder={placeholder} className="w-full border border-gray-300 rounded-xl p-3" />
-    </div>
   );
 }
