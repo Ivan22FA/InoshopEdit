@@ -10,27 +10,45 @@ export default function AboutPage() {
   const sections: Record<SectionKey, { title: string; text: string; image: string }> = {
     who: {
       title: "Siapa Kami",
-      text: `INOShop adalah platform inovasi yang menghubungkan pelaku inovasi, industri dan pemerintah...`,
+      text: `Innoveast adalah platform inovasi yang dirancang untuk menghubungkan 
+              pengusaha, peneliti, industri, dan pemerintah, dengan tujuan mempercepat 
+              adopsi teknologi serta kolaborasi lintas sektor. Kami berperan sebagai 
+              ekosistem digital yang mendukung seluruh proses hilir penelitian dan 
+              pengembangan inovasi, dari ide hingga implementasi.`,
       image: "/images/story-who.jpg",
     },
     what: {
       title: "Apa yang Kami Lakukan",
-      text: `Kami membangun marketplace inovasi dan sistem teknologi untuk mempercepat hilirisasi inovasi...`,
+      text: `Kami menyediakan marketplace inovasi yang menghubungkan kebutuhan teknologi industri 
+                dengan solusi yang ditawarkan oleh peneliti, startup, dan pengusaha. Innoveast 
+                memfasilitasi proses pencocokan inovasi agar lebih cepat, efisien, dan terfokus, 
+                sehingga setiap solusi tepat sasaran dan dapat diimplementasikan dengan optimal.`,
       image: "/images/story-what.jpg",
     },
     why: {
       title: "Mengapa Ini Penting",
-      text: `Inovasi adalah fondasi daya saing bangsa dan ekonomi masa depan...`,
+      text: `Inovasi adalah kunci untuk mendorong pertumbuhan industri dan memperkuat daya saing 
+                nasional. Namun, banyak solusi inovatif yang terhambat dalam proses adopsi karena 
+                kurangnya akses ke pasar atau kesulitan menemukan mitra yang tepat. Dengan Innoveast, 
+                proses ini dipermudah sehingga inovasi dapat tersalurkan dengan lebih cepat, efisien, 
+                dan berdampak nyata.`,
       image: "/images/story-why.jpg",
     },
     stand: {
       title: "Nilai yang Kami Junjung",
-      text: `Kolaboratif, terbuka, inklusif, dan berorientasi dampak nyata...`,
+      text: `Kami menjunjung tinggi transparansi, kolaborasi, dan keberlanjutan. Setiap inovasi yang 
+                masuk ke platform kami diproses dengan prinsip etika, keterbukaan, dan fokus pada 
+                solusi yang memberikan manfaat nyata bagi masyarakat dan industri. Nilai-nilai ini 
+                menjadi fondasi untuk membangun ekosistem inovasi yang sehat dan berkelanjutan.`,
       image: "/images/story-stand.jpg",
     },
     journey: {
       title: "Perjalanan Kami",
-      text: `Berawal dari inisiatif BIRDA Jawa Timur, INOShop dibangun untuk menyatukan ekosistem inovasi...`,
+      text: `Innoveast lahir dari kebutuhan untuk menjembatani kesenjangan antara penelitian, 
+                pengembangan, dan implementasi solusi inovatif. Sejak awal, kami fokus menciptakan 
+                ekosistem digital yang dapat mempertemukan peneliti, startup, pengusaha, dan industri, 
+                sehingga inovasi dapat diakses dengan mudah, cepat, dan tepat sasaran. Perjalanan kami 
+                terus berkembang seiring bertambahnya kolaborasi dan inovasi yang berhasil kami fasilitasi.`,
       image: "/images/story-journey.jpg",
     },
   };
@@ -41,9 +59,6 @@ export default function AboutPage() {
   const [fade, setFade] = useState(true);
   const [mobilePhase, setMobilePhase] = useState<"title" | "content">("title");
 
-  // ===========================================
-  // 🔥 REF FIX — TypeScript dijamin tidak error
-  // ===========================================
   const listRefs = useRef<(HTMLLIElement | null)[]>([]);
   const [indicatorPos, setIndicatorPos] = useState(0);
 
@@ -53,21 +68,16 @@ export default function AboutPage() {
     if (el) setIndicatorPos(el.offsetTop + el.offsetHeight / 2 - 10);
   }, [active]);
 
-  // Auto rotate tiap 5 detik
   useEffect(() => {
     const interval = setInterval(() => {
       setFade(false);
       setTimeout(() => {
         const next = keys[(keys.indexOf(active) + 1) % keys.length];
         setActive(next);
-
-        // 🔹 Agar mobile langsung tampil konten
         setMobilePhase("content");
-
         setTimeout(() => setFade(true), 250);
       }, 150);
     }, 5000);
-
     return () => clearInterval(interval);
   }, [active]);
 
@@ -109,23 +119,20 @@ export default function AboutPage() {
               <h3 className={`text-xl font-bold border-l-4 border-blue-600 pl-3 mb-3 transition-opacity duration-300 ${fade ? "opacity-100" : "opacity-0"}`}>
                 {sections[active].title}
               </h3>
-              <p className={`text-gray-700 mb-6 transition-opacity duration-300 ${fade ? "opacity-100" : "opacity-0"}`}>
+              <p className={`text-gray-700 mb-6 text-justify leading-relaxed transition-opacity duration-300 ${fade ? "opacity-100" : "opacity-0"}`}>
                 {sections[active].text}
               </p>
 
               <ul className="relative space-y-4 font-semibold text-gray-600 pl-4">
-                {/* indikator line */}
                 <span className="absolute left-0 w-1 bg-blue-600 rounded transition-all duration-300"
                   style={{ top: indicatorPos, height: 22 }} />
 
                 {keys.map((key, i) => (
                   <li
                     key={key}
-                    ref={(el) => { listRefs.current[i] = el; }} // ← ref clean (tidak return apapun)
+                    ref={(el) => { listRefs.current[i] = el; }}
                     onClick={() => handleClick(key)}
-                    className={`cursor-pointer transition ${
-                      active === key ? "text-gray-900 font-bold" : "text-gray-500 hover:text-blue-500"
-                    }`}
+                    className={`cursor-pointer transition ${active === key ? "text-gray-900 font-bold" : "text-gray-500 hover:text-blue-500"}`}
                   >
                     {sections[key].title}
                   </li>
@@ -161,10 +168,9 @@ export default function AboutPage() {
                   </h3>
                 </div>
 
-                {/* 🔹 Konten mobile otomatis tampil saat auto-rotate */}
                 {active === key && mobilePhase === "content" && (
                   <div className="flex flex-col md:flex-row gap-4">
-                    <div className="flex-1 text-left">
+                    <div className="flex-1 text-justify">
                       <p className="text-gray-700 leading-relaxed mb-4 animate-fadeIn">
                         {sections[key].text}
                       </p>
@@ -173,6 +179,7 @@ export default function AboutPage() {
                       <Image
                         src={sections[key].image}
                         alt={sections[key].title}
+                        fill
                         className="rounded-xl shadow-lg object-cover w-full h-[250px] animate-slideUp"
                       />
                     </div>
@@ -187,7 +194,7 @@ export default function AboutPage() {
       {/* Team */}
       <section className="py-20 bg-gray-50 text-center">
         <h2 className="text-3xl font-bold mb-4">Orang-Orang Kami</h2>
-        <p className="text-gray-700 max-w-3xl mx-auto text-lg">
+        <p className="text-gray-700 max-w-3xl mx-auto text-lg text-justify leading-relaxed">
           Tim adalah kekuatan utama kami. Mereka yang menghidupkan inovasi.
         </p>
       </section>

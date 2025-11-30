@@ -41,22 +41,22 @@ export default function AboutSection() {
           <div className="space-y-6 leading-relaxed">
             <div>
               <h3 className="font-bold text-xl mb-2">Who We Are</h3>
-              <p className="text-justify">
-                INOShop is an innovation platform built to connect entrepreneurs,
-                researchers, industry, and government to accelerate technology
-                adoption and cross-sector collaboration. We serve as a digital
-                ecosystem that supports the downstream process of research and
-                the development of innovation.
-              </p>
-            </div>
+              <p className="text-justify leading-normal text-gray-700">
+              Innoveast adalah platform inovasi yang dirancang untuk menghubungkan 
+              pengusaha, peneliti, industri, dan pemerintah, dengan tujuan mempercepat 
+              adopsi teknologi serta kolaborasi lintas sektor. Kami berperan sebagai 
+              ekosistem digital yang mendukung seluruh proses hilir penelitian dan 
+              pengembangan inovasi, dari ide hingga implementasi.
+            </p>
+          </div>
 
             <div>
               <h3 className="font-bold text-xl mb-2">What We Do</h3>
-              <p className="text-justify">
-                We provide an innovation marketplace that connects industry
-                technology needs with solutions from researchers, startups, and
-                entrepreneurs. INOShop facilitates the innovation matching
-                process to make it faster and more focused.
+              <p className="text-justify leading-normal text-gray-700">
+                Kami menyediakan marketplace inovasi yang menghubungkan kebutuhan teknologi industri 
+                dengan solusi yang ditawarkan oleh peneliti, startup, dan pengusaha. Innoveast 
+                memfasilitasi proses pencocokan inovasi agar lebih cepat, efisien, dan terfokus, 
+                sehingga setiap solusi tepat sasaran dan dapat diimplementasikan dengan optimal.
               </p>
             </div>
           </div>
