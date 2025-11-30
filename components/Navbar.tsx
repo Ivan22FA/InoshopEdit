@@ -71,7 +71,7 @@ export default function Navbar() {
           href="/"
           className={`text-xl font-semibold transition ${isScrolled ? "text-black" : "text-white"}`}
         >
-          Inoshop
+          Innoveast
         </Link>
 
         {/* ===== MOBILE NAVIGATION ===== */}

@@ -11,7 +11,7 @@ export default function AboutSection() {
         {/* Kiri: Judul */}
         <div className="lg:w-1/3 text-center flex flex-col items-center gap-3">
           <h1 className="text-5xl font-bold text-orange-500">
-            INOSHOP
+            INNOVEAST
           </h1>
 
           <div className="flex items-center gap-3 mt-2">
@@ -41,7 +41,7 @@ export default function AboutSection() {
           <div className="space-y-6 leading-relaxed">
             <div>
               <h3 className="font-bold text-xl mb-2">Who We Are</h3>
-              <p>
+              <p className="text-justify">
                 INOShop is an innovation platform built to connect entrepreneurs,
                 researchers, industry, and government to accelerate technology
                 adoption and cross-sector collaboration. We serve as a digital
@@ -52,7 +52,7 @@ export default function AboutSection() {
 
             <div>
               <h3 className="font-bold text-xl mb-2">What We Do</h3>
-              <p>
+              <p className="text-justify">
                 We provide an innovation marketplace that connects industry
                 technology needs with solutions from researchers, startups, and
                 entrepreneurs. INOShop facilitates the innovation matching
