@@ -68,6 +68,7 @@ export default function AboutPage() {
     if (el) setIndicatorPos(el.offsetTop + el.offsetHeight / 2 - 10);
   }, [active]);
 
+  // Auto rotate tiap 5 detik
   useEffect(() => {
     const interval = setInterval(() => {
       setFade(false);
@@ -169,18 +170,20 @@ export default function AboutPage() {
                 </div>
 
                 {active === key && mobilePhase === "content" && (
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <div className="flex-1 text-justify">
-                      <p className="text-gray-700 leading-relaxed mb-4 animate-fadeIn">
+                  <div className="flex flex-col gap-4">
+                    {/* Text */}
+                    <div>
+                      <p className="text-gray-700 leading-relaxed mb-4 text-justify animate-fadeIn">
                         {sections[key].text}
                       </p>
                     </div>
-                    <div className="flex-1">
+                    {/* Image di bawah text */}
+                    <div className="w-full h-[250px] relative">
                       <Image
                         src={sections[key].image}
                         alt={sections[key].title}
                         fill
-                        className="rounded-xl shadow-lg object-cover w-full h-[250px] animate-slideUp"
+                        className="rounded-xl shadow-lg object-cover animate-slideUp"
                       />
                     </div>
                   </div>
