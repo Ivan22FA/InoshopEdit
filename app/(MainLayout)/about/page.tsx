@@ -60,7 +60,10 @@ export default function AboutPage() {
       setTimeout(() => {
         const next = keys[(keys.indexOf(active) + 1) % keys.length];
         setActive(next);
-        setMobilePhase("title");
+
+        // 🔹 Agar mobile langsung tampil konten
+        setMobilePhase("content");
+
         setTimeout(() => setFade(true), 250);
       }, 150);
     }, 5000);
@@ -138,7 +141,6 @@ export default function AboutPage() {
           </div>
 
           {/* MOBILE VIEW */}
-          {/* Mobile */}
           <div className="md:hidden space-y-12">
             {keys.map((key) => (
               <div
@@ -159,6 +161,7 @@ export default function AboutPage() {
                   </h3>
                 </div>
 
+                {/* 🔹 Konten mobile otomatis tampil saat auto-rotate */}
                 {active === key && mobilePhase === "content" && (
                   <div className="flex flex-col md:flex-row gap-4">
                     <div className="flex-1 text-left">
