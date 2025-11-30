@@ -138,20 +138,41 @@ export default function AboutPage() {
           </div>
 
           {/* MOBILE VIEW */}
-          <div className="md:hidden space-y-10">
-            {keys.map(key => (
-              <div key={key} className={`transition ${active === key ? "opacity-100" : "opacity-30"}`}>
-                <div onClick={() => handleClick(key)} className="flex items-center mb-3 cursor-pointer">
-                  <span className={`w-1 h-6 mr-3 bg-blue-600 rounded transition ${active === key ? "opacity-100" : "opacity-0"}`} />
-                  <h3 className={`text-xl font-bold transition ${active === key ? "text-blue-600" : "text-gray-400"}`}>
+          {/* Mobile */}
+          <div className="md:hidden space-y-12">
+            {keys.map((key) => (
+              <div
+                key={key}
+                className={`flex flex-col transition-all duration-700 ease-in-out ${active === key ? "opacity-100 translate-y-0" : "opacity-20 -translate-y-2"}`}
+              >
+                <div
+                  className="flex items-center mb-3 cursor-pointer"
+                  onClick={() => handleClick(key)}
+                >
+                  <span
+                    className={`w-1 h-6 mr-3 rounded bg-blue-600 transition-all duration-500 ${active === key ? "opacity-100" : "opacity-0"}`}
+                  />
+                  <h3
+                    className={`text-xl font-bold ${active === key ? "text-blue-600" : "text-gray-400"} transition-colors duration-500`}
+                  >
                     {sections[key].title}
                   </h3>
                 </div>
 
                 {active === key && mobilePhase === "content" && (
-                  <div className="flex flex-col gap-4">
-                    <p className="text-gray-700 leading-relaxed">{sections[key].text}</p>
-                    <img src={sections[key].image} alt={sections[key].title} className="rounded-xl shadow-lg h-[250px] object-cover" />
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex-1 text-left">
+                      <p className="text-gray-700 leading-relaxed mb-4 animate-fadeIn">
+                        {sections[key].text}
+                      </p>
+                    </div>
+                    <div className="flex-1">
+                      <Image
+                        src={sections[key].image}
+                        alt={sections[key].title}
+                        className="rounded-xl shadow-lg object-cover w-full h-[250px] animate-slideUp"
+                      />
+                    </div>
                   </div>
                 )}
               </div>
