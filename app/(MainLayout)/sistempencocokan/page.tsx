@@ -12,30 +12,10 @@ interface Innovation {
 }
 
 const dummyData: Innovation[] = [
-  {
-    id: 1,
-    title: "Mesin Sortir Otomatis",
-    description: "Sistem sortir barang otomatis untuk industri logistik.",
-    categories: ["Logistik", "Otomasi"],
-  },
-  {
-    id: 2,
-    title: "AI Prediksi Kerusakan Mesin",
-    description: "Machine learning untuk maintenance industri.",
-    categories: ["AI", "Maintenance"],
-  },
-  {
-    id: 3,
-    title: "Inovasi Pengolahan Air Limbah",
-    description: "Teknologi eco-friendly untuk industri kimia.",
-    categories: ["Lingkungan", "Kimia"],
-  },
-  {
-    id: 4,
-    title: "Robot Pengepakan Barang",
-    description: "Robot industri untuk pengepakan barang.",
-    categories: ["Robotik", "Manufaktur"],
-  },
+  { id: 1, title: "Mesin Sortir Otomatis", description: "Sistem sortir barang otomatis untuk industri logistik.", categories: ["Logistik", "Otomasi"] },
+  { id: 2, title: "AI Prediksi Kerusakan Mesin", description: "Machine learning untuk maintenance industri.", categories: ["AI", "Maintenance"] },
+  { id: 3, title: "Inovasi Pengolahan Air Limbah", description: "Teknologi eco-friendly untuk industri kimia.", categories: ["Lingkungan", "Kimia"] },
+  { id: 4, title: "Robot Pengepakan Barang", description: "Robot industri untuk pengepakan barang.", categories: ["Robotik", "Manufaktur"] },
 ];
 
 // ------------------------------
@@ -45,8 +25,7 @@ const normalize = (text: string) =>
   text.toLowerCase().replace(/[^a-z0-9 ]/g, "");
 
 const levenshtein = (a: string, b: string) => {
-  const m = a.length,
-    n = b.length;
+  const m = a.length, n = b.length;
   const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
 
   for (let i = 0; i <= m; i++) dp[i][0] = i;
@@ -93,26 +72,38 @@ export default function SistemPencocokanPage() {
     <div className="min-h-screen bg-gray-50 pb-20">
 
       {/* HERO */}
-      <section className="relative w-full py-28 bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-700 text-white text-center">
-        <h1 className="text-5xl font-extrabold">Sistem Matching Industri & Inovasi</h1>
-        <p className="text-lg mt-4 opacity-90">
+      <section
+        className="
+        relative w-full 
+        py-20 sm:py-28 
+        bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-700 
+        text-white text-center
+      ">
+        <h1 className="text-3xl sm:text-5xl font-extrabold px-4">
+          Sistem Matching Industri & Inovasi
+        </h1>
+
+        <p className="text-sm sm:text-lg mt-4 opacity-90 px-6">
           Ketik kebutuhan Anda — AI akan mencocokkan inovasi yang paling relevan.
         </p>
       </section>
 
       {/* SEARCH BOX */}
-      <div className="max-w-3xl mx-auto -mt-12 px-4 relative">
+      <div className="max-w-3xl mx-auto -mt-10 sm:-mt-12 px-4 relative">
         <div
-          className={`bg-white shadow-xl rounded-full flex items-center px-6 py-4 border border-gray-200 transition-all duration-300 ${
-            focus ? "ring-4 ring-blue-300/40 scale-[1.02]" : ""
-          }`}
+          className={`
+            bg-white shadow-xl rounded-full flex items-center 
+            px-4 sm:px-6 py-3 sm:py-4 
+            border border-gray-200 transition-all duration-300
+            ${focus ? "ring-4 ring-blue-300/40 scale-[1.02]" : ""}
+          `}
         >
-          <Search className="text-gray-400 w-6 h-6 mr-4" />
+          <Search className="text-gray-400 w-5 h-5 sm:w-6 sm:h-6 mr-3 sm:mr-4" />
 
           <input
             type="text"
             placeholder="Cari inovasi seperti 'AI', 'Robotik', 'Logistik'..."
-            className="w-full py-2 text-lg outline-none"
+            className="w-full py-2 text-base sm:text-lg outline-none"
             value={search}
             onFocus={() => setFocus(true)}
             onBlur={() => setTimeout(() => setFocus(false), 200)}
@@ -135,7 +126,7 @@ export default function SistemPencocokanPage() {
                   className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-3"
                 >
                   <History className="w-4 h-4 text-gray-400" />
-                  <span>{item.title}</span>
+                  <span className="text-sm sm:text-base">{item.title}</span>
                 </Link>
               ))
             )}
@@ -144,25 +135,30 @@ export default function SistemPencocokanPage() {
       </div>
 
       {/* RESULTS */}
-      <div className="max-w-5xl mx-auto mt-20 px-4">
+      <div className="max-w-5xl mx-auto mt-14 sm:mt-20 px-4">
         {search && filtered.length > 0 && (
-          <h2 className="text-xl mb-6 text-gray-700">
+          <h2 className="text-lg sm:text-xl mb-6 text-gray-700">
             Hasil pencarian untuk: <b>"{search}"</b>
           </h2>
         )}
 
         {/* SHOW CARDS ONLY AFTER SEARCH */}
         {search.trim() !== "" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {filtered.map((item) => (
               <Link
                 key={item.id}
                 href={`/sistempencocokan/${item.id}`}
-                className="p-6 rounded-3xl bg-white shadow-lg border border-gray-100
-                hover:shadow-2xl hover:-translate-y-2 transition-all duration-300
-                backdrop-blur-xl bg-opacity-80 hover:scale-[1.02]"
+                className="
+                  p-5 sm:p-6 
+                  rounded-3xl bg-white shadow-lg border border-gray-100
+                  hover:shadow-2xl hover:-translate-y-2 
+                  transition-all duration-300
+                  backdrop-blur-xl bg-opacity-80 
+                  hover:scale-[1.02]
+                "
               >
-                <h3 className="text-2xl font-semibold mb-3 text-indigo-700">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-3 text-indigo-700">
                   {item.title}
                 </h3>
 
@@ -174,7 +170,10 @@ export default function SistemPencocokanPage() {
                   {item.categories.map((c) => (
                     <span
                       key={c}
-                      className="text-xs bg-gradient-to-r from-indigo-200 to-indigo-300 text-indigo-700 px-3 py-1 rounded-full font-medium"
+                      className="
+                        text-xs bg-gradient-to-r from-indigo-200 to-indigo-300 
+                        text-indigo-700 px-3 py-1 rounded-full font-medium
+                      "
                     >
                       {c}
                     </span>

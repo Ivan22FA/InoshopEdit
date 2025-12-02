@@ -75,8 +75,8 @@ export default function DetailPage() {
 
   if (!item) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-        <h1 className="text-3xl font-bold text-gray-700">Inovasi Tidak Ditemukan</h1>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6 text-center">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-700">Inovasi Tidak Ditemukan</h1>
         <Link
           href="/sistempencocokan"
           className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
@@ -90,32 +90,31 @@ export default function DetailPage() {
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
 
-      {/* ============================== */}
       {/* HERO */}
-      {/* ============================== */}
-      <section className="w-full py-20 bg-gradient-to-br from-indigo-700 via-purple-700 to-pink-700 text-white text-center shadow-xl">
-        <h1 className="text-4xl md:text-5xl font-extrabold">Detail Hasil Pencocokan</h1>
-        <p className="text-lg opacity-90 mt-3">
+      <section className="w-full py-16 md:py-20 bg-gradient-to-br from-indigo-700 via-purple-700 to-pink-700 text-white text-center shadow-xl px-4">
+        <h1 className="text-3xl md:text-5xl font-extrabold">
+          Detail Hasil Pencocokan
+        </h1>
+        <p className="text-base md:text-lg opacity-90 mt-3">
           Informasi mendalam berdasarkan kecocokan inovasi
         </p>
       </section>
 
-      {/* ============================== */}
-      {/* MAIN CONTENT */}
-      {/* ============================== */}
-      <div className="max-w-5xl mx-auto px-6 mt-14">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 mt-10 md:mt-14">
 
-        <div className="bg-white shadow-2xl rounded-3xl p-10 border border-gray-100">
+        <div className="bg-white shadow-2xl rounded-2xl md:rounded-3xl p-6 md:p-10 border border-gray-100">
 
           {/* TITLE */}
-          <h2 className="text-4xl font-extrabold text-gray-900">{item.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-snug">
+            {item.title}
+          </h2>
 
           {/* CATEGORIES */}
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-5 md:mt-6 flex flex-wrap gap-2 md:gap-3">
             {item.categories.map((c) => (
               <span
                 key={c}
-                className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full font-medium text-sm"
+                className="px-3 md:px-4 py-1.5 md:py-2 bg-indigo-100 text-indigo-700 rounded-full font-medium text-xs md:text-sm"
               >
                 {c}
               </span>
@@ -123,30 +122,32 @@ export default function DetailPage() {
           </div>
 
           {/* DESCRIPTION */}
-          <p className="mt-6 text-gray-700 text-lg leading-relaxed">{item.description}</p>
+          <p className="mt-5 md:mt-6 text-gray-700 text-base md:text-lg leading-relaxed">
+            {item.description}
+          </p>
 
           {/* PROBLEM */}
-          <div className="mt-10">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Masalah yang Diselesaikan</h3>
-            <p className="text-gray-700">{item.problem}</p>
+          <div className="mt-8 md:mt-10">
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Masalah yang Diselesaikan</h3>
+            <p className="text-gray-700 text-sm md:text-base">{item.problem}</p>
           </div>
 
           {/* APPROACH */}
           <div className="mt-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Pendekatan / Teknologi Utama</h3>
-            <p className="text-gray-700">{item.approach}</p>
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Pendekatan / Teknologi Utama</h3>
+            <p className="text-gray-700 text-sm md:text-base">{item.approach}</p>
           </div>
 
           {/* STAGE */}
           <div className="mt-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Tahap Implementasi</h3>
-            <p className="text-gray-700">{item.stage}</p>
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Tahap Implementasi</h3>
+            <p className="text-gray-700 text-sm md:text-base">{item.stage}</p>
           </div>
 
           {/* IMPACT */}
-          <div className="mt-10">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Impact yang Terukur</h3>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1">
+          <div className="mt-8 md:mt-10">
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">Impact yang Terukur</h3>
+            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm md:text-base">
               {item.impact.map((i, idx) => (
                 <li key={idx}>{i}</li>
               ))}
@@ -154,9 +155,9 @@ export default function DetailPage() {
           </div>
 
           {/* USE CASE */}
-          <div className="mt-10">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Contoh Penggunaan</h3>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1">
+          <div className="mt-8 md:mt-10">
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">Contoh Penggunaan</h3>
+            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm md:text-base">
               {item.usecase.map((u, idx) => (
                 <li key={idx}>{u}</li>
               ))}
@@ -164,30 +165,32 @@ export default function DetailPage() {
           </div>
 
           {/* DEVELOPER */}
-          <div className="mt-10 bg-gray-50 border border-gray-300 p-6 rounded-2xl">
-            <h3 className="text-xl font-bold text-gray-800">Pengembang</h3>
-            <p className="text-gray-700 mt-2">{item.developer}</p>
+          <div className="mt-10 bg-gray-50 border border-gray-300 p-5 md:p-6 rounded-2xl">
+            <h3 className="text-lg md:text-xl font-bold text-gray-800">Pengembang</h3>
+            <p className="text-gray-700 mt-2 text-sm md:text-base">{item.developer}</p>
           </div>
 
-          {/* CTA */}
-          <div className="mt-12 flex flex-wrap gap-4">
-            <button className="px-6 py-3 bg-indigo-600 text-white rounded-xl shadow hover:bg-indigo-700 transition">
+          {/* CTA BUTTONS */}
+          <div className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-4">
+            <button className="w-full sm:w-auto px-6 py-3 bg-indigo-600 text-white rounded-xl shadow hover:bg-indigo-700 transition text-sm md:text-base">
               Hubungi Pengembang
             </button>
-            <button className="px-6 py-3 bg-gray-900 text-white rounded-xl shadow hover:bg-black transition">
+
+            <button className="w-full sm:w-auto px-6 py-3 bg-gray-900 text-white rounded-xl shadow hover:bg-black transition text-sm md:text-base">
               Lihat Inovasi Serupa
             </button>
           </div>
 
           {/* BACK */}
-          <div className="mt-14 flex justify-center">
+          <div className="mt-12 md:mt-14 flex justify-center">
             <Link
               href="/sistempencocokan"
-              className="px-8 py-4 bg-blue-600 text-white rounded-full text-lg font-semibold shadow-lg hover:bg-blue-700 transition"
+              className="px-6 md:px-8 py-3 md:py-4 bg-blue-600 text-white rounded-full text-base md:text-lg font-semibold shadow-lg hover:bg-blue-700 transition"
             >
               ← Kembali ke Sistem Matching
             </Link>
           </div>
+
         </div>
       </div>
     </div>
