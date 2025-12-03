@@ -4,6 +4,9 @@ import { History, Search } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
+// =============================
+// Interface
+// =============================
 interface Innovation {
   id: number;
   title: string;
@@ -11,6 +14,9 @@ interface Innovation {
   categories: string[];
 }
 
+// =============================
+// Dummy Data
+// =============================
 const dummyData: Innovation[] = [
   { id: 12, title: "Kampung Semanggi", description: "Inovasi Kampung Semanggi merupakan upaya pelestarian kuliner khas Surabaya sekaligus strategi pemberdayaan masyarakat melalui pengembangan kampung wisata, kampung edukasi, dan diversifikasi produk Semanggi. Program ini bertujuan meningkatkan ekonomi warga, mengangkat UMKM lokal, serta menjaga keberlanjutan budaya dan lingkungan.", categories: ["Logistik", "Otomasi"] },
 
@@ -29,19 +35,17 @@ const dummyData: Innovation[] = [
   { id: 19, title: "Bricket Dari Limbah Kopi", description: "Inovasi ini mengolah limbah kopi (kayu, kulit, daun) di lingkungan SDN Gelang 07—yang sebelumnya tidak termanfaatkan—menjadi briket biomassa sebagai energi alternatif terbarukan. Berbasis pendidikan lingkungan dan model ekonomi sirkular sederhana.", categories: ["Robotik", "Manufaktur"] },
 ];
 
-
-// ---------------------------------------------------------
-// 🔍 Normalizer
-// ---------------------------------------------------------
+// =============================
+// Normalizer
+// =============================
 const normalize = (t: string) =>
   t.toLowerCase().replace(/[^a-z0-9 ]/g, "");
 
-// ---------------------------------------------------------
-// 🔍 Levenshtein (fuzzy detection)
-// ---------------------------------------------------------
+// =============================
+// Levenshtein for fuzzy
+// =============================
 const levenshtein = (a: string, b: string) => {
-  const m = a.length,
-    n = b.length;
+  const m = a.length, n = b.length;
   const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
 
   for (let i = 0; i <= m; i++) dp[i][0] = i;
@@ -52,24 +56,27 @@ const levenshtein = (a: string, b: string) => {
       dp[i][j] =
         a[i - 1] === b[j - 1]
           ? dp[i - 1][j - 1]
-          : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+          : 1 + Math.min(
+              dp[i - 1][j],
+              dp[i][j - 1],
+              dp[i - 1][j - 1]
+            );
     }
   }
   return dp[m][n];
 };
 
-const fuzzyWordMatch = (text: string, word: string) => {
-  if (text.includes(word)) return true;
+const fuzzyWordMatch = (text: string, word: string) =>
+  text.includes(word) || text.split(" ").some((w) => levenshtein(w, word) <= 1);
 
-  return text.split(" ").some((w) => levenshtein(w, word) <= 1);
-};
-
-// ---------------------------------------------------------
-// ⭐ SEMANTIC WEIGHTED SEARCH → UTAMA
-// ---------------------------------------------------------
+// =============================
+// ⭐ SMART SEMANTIC SEARCH
+// =============================
 function semanticSearch(query: string, data: Innovation[]) {
   const q = normalize(query);
   const words = q.split(" ").filter((w) => w.length > 2);
+
+  const isSpecific = words.length >= 2; // <= SMART DETECTION
 
   return data
     .map((item) => {
@@ -80,39 +87,49 @@ function semanticSearch(query: string, data: Innovation[]) {
       let score = 0;
 
       words.forEach((w) => {
-        if (title.includes(w)) score += 40;
-        else if (fuzzyWordMatch(title, w)) score += 25;
+        // TITLE
+        if (title.includes(w)) score += isSpecific ? 70 : 40;
+        else if (fuzzyWordMatch(title, w)) score += isSpecific ? 40 : 25;
 
-        if (desc.includes(w)) score += 35;
-        else if (fuzzyWordMatch(desc, w)) score += 15;
+        // DESCRIPTION
+        if (desc.includes(w)) score += isSpecific ? 60 : 35;
+        else if (fuzzyWordMatch(desc, w)) score += isSpecific ? 30 : 15;
 
-        if (cats.includes(w)) score += 20;
+        // CATEGORY
+        if (cats.includes(w)) score += isSpecific ? 35 : 20;
       });
+
+      // PENALTI UNTUK KETIDAKSESUAIAN PADA QUERY SPESIFIK
+      if (isSpecific) {
+        const joined = `${title} ${desc} ${cats}`;
+        const missingWords = words.filter((w) => !joined.includes(w));
+        score -= missingWords.length * 25;
+      }
 
       return { ...item, score };
     })
-    .filter((item) => item.score > 0)
+    .filter((i) => i.score > 10)
     .sort((a, b) => b.score - a.score);
 }
 
+// =============================
+// COMPONENT UI
+// =============================
 export default function SistemPencocokanPage() {
   const [search, setSearch] = useState("");
   const [focus, setFocus] = useState(false);
 
-  const filtered = search.trim()
-    ? semanticSearch(search, dummyData)
-    : [];
+  const filtered = search.trim() ? semanticSearch(search, dummyData) : [];
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-
       {/* HERO */}
       <section className="relative w-full py-20 sm:py-28 bg-linear-to-br from-blue-700 via-indigo-700 to-purple-700 text-white text-center">
         <h1 className="text-3xl sm:text-5xl font-extrabold px-4">
           Sistem Matching Industri & Inovasi
         </h1>
         <p className="text-sm sm:text-lg mt-4 opacity-90 px-6">
-          Ketik kebutuhan Anda — AI akan mencocokkan inovasi yang paling relevan.
+          Ketik kebutuhan Anda — sistem akan mencocokkan inovasi paling relevan secara otomatis.
         </p>
       </section>
 
@@ -129,7 +146,7 @@ export default function SistemPencocokanPage() {
           <Search className="text-gray-400 w-5 h-5 sm:w-6 sm:h-6 mr-3 sm:mr-4" />
           <input
             type="text"
-            placeholder="Cari inovasi seperti 'Limbah', 'Energi', 'Pangan'..."
+            placeholder="Cari inovasi seperti 'pengolahan limbah', 'energi', 'pangan'..."
             className="w-full py-2 text-base sm:text-lg outline-none"
             value={search}
             onFocus={() => setFocus(true)}
@@ -138,7 +155,7 @@ export default function SistemPencocokanPage() {
           />
         </div>
 
-        {/* SUGGESTIONS */}
+        {/* AUTOCOMPLETE */}
         {focus && search.trim() !== "" && (
           <div className="absolute mt-3 w-full bg-white shadow-xl rounded-2xl border border-gray-200 py-2 z-20">
             {filtered.length === 0 ? (
@@ -169,7 +186,6 @@ export default function SistemPencocokanPage() {
           </h2>
         )}
 
-        {/* CARDS */}
         {search.trim() !== "" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {filtered.map((item) => (
@@ -194,7 +210,7 @@ export default function SistemPencocokanPage() {
                     <span
                       key={c}
                       className="text-xs bg-linear-to-r from-indigo-200 to-indigo-300 
-                                 text-indigo-700 px-3 py-1 rounded-full font-medium"
+                        text-indigo-700 px-3 py-1 rounded-full font-medium"
                     >
                       {c}
                     </span>
